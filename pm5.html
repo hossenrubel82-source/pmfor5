@@ -1,0 +1,296 @@
+<title>৫ মিনিটের প্রধানমন্ত্রী</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Tiro+Bangla&display=swap">
+<style>
+/* Layout: one left-aligned column styled as a mock official notice file, a big countdown on top, issued notices stacked below. */
+:root {
+  --bg: #e8eee9;
+  --paper: #fbfcfa;
+  --ink: #12281f;
+  --muted: #55675d;
+  --green: #0b5d3f;
+  --on-green: #ffffff;
+  --stamp: #b9302a;
+  --line: #c6d1c9;
+  --track: #cfdad2;
+  --font-display: "Tiro Bangla", "Noto Serif Bengali", "Kalpurush", serif;
+  --font-body: "Hind Siliguri", "Noto Sans Bengali", "Kalpurush", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1812; --paper: #14261d; --ink: #e5eee8; --muted: #93a89b; --green: #52c28f;
+    --on-green: #072217; --stamp: #ff8277; --line: #29443a; --track: #234034; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1812; --paper: #14261d; --ink: #e5eee8; --muted: #93a89b; --green: #52c28f;
+  --on-green: #072217; --stamp: #ff8277; --line: #29443a; --track: #234034; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; padding-inline: 16px; padding-block: 24px 48px; }
+.wrap { max-width: 680px; margin-inline: auto; display: flex; flex-direction: column; gap: 22px; }
+.kicker { font-size: 0.8rem; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.9rem, 7vw, 2.8rem); line-height: 1.2; margin: 6px 0 0; text-wrap: balance; }
+.lead { color: var(--muted); margin: 8px 0 0; max-width: 56ch; }
+
+.clock { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.time { font-family: var(--font-display); font-size: clamp(3.6rem, 18vw, 6.4rem); line-height: 1; color: var(--green); font-variant-numeric: tabular-nums; }
+.clock-note { padding-bottom: 8px; min-width: 0; color: var(--muted); font-size: 0.95rem; }
+.clock-note strong { color: var(--ink); font-weight: 600; }
+.track { height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; }
+.bar { height: 100%; width: 100%; background: var(--green); transition: width 1s linear; }
+.urgent .time { color: var(--stamp); }
+.urgent .bar { background: var(--stamp); }
+
+.notice { background: var(--paper); border: 1px solid var(--line); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); border-bottom: 1px dashed var(--line); padding-bottom: 12px; }
+.stamp { display: inline-block; border: 2px solid var(--stamp); color: var(--stamp); font-weight: 700; padding: 0 10px; border-radius: 4px; transform: rotate(-3deg); letter-spacing: 0.04em; }
+.stamp.pop { animation: pop 0.35s ease-out; }
+@keyframes pop { from { transform: rotate(-3deg) scale(1.5); opacity: 0; } to { transform: rotate(-3deg) scale(1); opacity: 1; } }
+.notice h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.4rem, 5vw, 1.8rem); line-height: 1.3; margin: 0; text-wrap: balance; }
+.notice p { margin: 0; max-width: 60ch; }
+dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; font-size: 0.95rem; }
+dt { color: var(--muted); }
+dd { margin: 0; min-width: 0; font-weight: 500; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+button { font: inherit; font-weight: 600; padding: 12px 18px; border-radius: 6px; cursor: pointer; border: 2px solid var(--green); }
+.primary { background: var(--green); color: var(--on-green); }
+.ghost { background: transparent; color: var(--green); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+button:focus-visible { outline: 3px solid var(--stamp); outline-offset: 2px; }
+button:not(:disabled):hover { filter: brightness(1.08); }
+
+.report { border-left: 4px solid var(--stamp); padding: 4px 0 4px 14px; }
+.report h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 0 0 4px; }
+.report p { margin: 0; color: var(--muted); }
+
+.log h3 { font-size: 0.9rem; letter-spacing: 0.04em; color: var(--muted); font-weight: 600; margin: 0 0 8px; }
+.log ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+.log li { display: grid; grid-template-columns: 2.2rem 1fr; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); }
+.log li span:first-child { font-family: var(--font-display); color: var(--green); font-size: 1.2rem; }
+.log li span:last-child { min-width: 0; }
+.log .empty { color: var(--muted); font-size: 0.95rem; }
+.foot { font-size: 0.8rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .bar { transition: none; } .stamp.pop { animation: none; } }
+</style>
+
+<main class="wrap">
+  <header>
+    <div class="kicker">কাল্পনিক প্রধানমন্ত্রীর দপ্তর · শুধু মজার জন্য</div>
+    <h1>৫ মিনিটের প্রধানমন্ত্রী</h1>
+    <p class="lead">ঘড়ি চালু করলেই ক্ষমতা তোমার হাতে। পাঁচ মিনিটে যত পারো প্রজ্ঞাপন জারি করো, তারপর বন্ধুদের পাঠাও।</p>
+  </header>
+
+  <section id="clockBox" aria-label="সময়">
+    <div class="clock">
+      <div class="time" id="time">০৫:০০</div>
+      <div class="clock-note" id="clockNote">ঘড়ি এখনো চালু হয়নি। নিচের নমুনা প্রজ্ঞাপন দেখে নাও।</div>
+    </div>
+    <div class="track" role="presentation"><div class="bar" id="bar"></div></div>
+  </section>
+
+  <article class="notice" aria-live="polite">
+    <div class="meta">
+      <span id="noticeNo">নমুনা প্রজ্ঞাপন</span>
+      <span class="stamp" id="stamp">নমুনা</span>
+    </div>
+    <h2 id="nTitle"></h2>
+    <p id="nDetail"></p>
+    <dl>
+      <dt>বাজেট</dt><dd id="nBudget"></dd>
+      <dt>বাস্তবায়ন</dt><dd id="nWhen"></dd>
+      <dt>জনগণ বলছে</dt><dd id="nReact"></dd>
+    </dl>
+  </article>
+
+  <div class="actions">
+    <button class="primary" id="issueBtn" type="button">ঘড়ি চালু করো, ক্ষমতা নাও</button>
+    <button class="ghost" id="copyBtn" type="button">কপি করো</button>
+    <button class="ghost" id="resetBtn" type="button" hidden>নতুন করে শুরু</button>
+  </div>
+
+  <section class="report" id="report" hidden>
+    <h3 id="repTitle"></h3>
+    <p id="repText"></p>
+  </section>
+
+  <section class="log">
+    <h3>এ পর্যন্ত জারি করা সিদ্ধান্ত</h3>
+    <ol id="logList"></ol>
+    <div class="empty" id="logEmpty">এখনো কোনো সিদ্ধান্ত নেওয়া হয়নি।</div>
+  </section>
+
+  <p class="foot">সব প্রজ্ঞাপন কাল্পনিক ও মজার। কোনো আসল সরকারি সংস্থা বা ব্যক্তির সঙ্গে মিল নেই।</p>
+</main>
+
+<script>
+(function () {
+  var IDEAS = [
+    { t: "রিকশায় হর্নের বদলে রবীন্দ্রসংগীত", d: "হর্নের বোতাম টিপলেই মৃদু সুরে গান বাজবে। দেখা যাক কে আর অকারণে হর্ন দেয়।" },
+    { t: "সিগন্যালে ৩০ সেকেন্ডের চা-বিরতি", d: "লাল বাতিতে দাঁড়িয়ে থাকা সবার জন্য জানালায় ভেসে আসবে ভাপা চায়ের গন্ধ।" },
+    { t: "উত্তর-দক্ষিণ ঢাকার আলাদা অফিস দিন", d: "সোম আর বুধবার উত্তর ঢাকা, মঙ্গল আর বৃহস্পতিবার দক্ষিণ ঢাকা। রাস্তা অর্ধেক ফাঁকা।" },
+    { t: "প্রতি শুক্রবার জাতীয় কাচ্চি দিবস", d: "সারা দেশে দুপুরে কাচ্চি। বোরহানি ঐচ্ছিক, কিন্তু উৎসাহিত।" },
+    { t: "মাসের শেষ সপ্তাহে ডিম-ভাজি ভর্তুকি", d: "বেতন ফুরিয়ে আসার সময় ডাল-ভাত-ডিমভাজির দাম অর্ধেক।" },
+    { t: "জাতীয় ফুচকা কমিশন গঠন", d: "টক, ঝাল আর পানির অনুপাত নির্ধারণ করবে এই কমিশন। অতিরিক্ত পানি দিলে সতর্কতা।" },
+    { t: "পাড়ায় পাড়ায় গলি-ক্রিকেট মাঠ", d: "প্রতিটি পাড়ায় একটা করে সরকারি গলি। শর্ত একটাই, বল জানালায় গেলে দায় ব্যাটসম্যানের।" },
+    { t: "বড় ম্যাচের দিন লোডশেডিং নিষিদ্ধ", d: "বল চলার সময় বিদ্যুৎ যাবে না। বিজ্ঞাপন বিরতিতে হলে আপত্তি নেই।" },
+    { t: "বৃষ্টির দিনে ফ্রি ওয়াইফাই", d: "বাইরে যাওয়া যায় না, তাই ঘরে বসে অন্তত নেটটা চলুক। সঙ্গে খিচুড়ির রেসিপি পাঠানো হবে।" },
+    { t: "'দাম কত?' কমেন্টের জবাব বাধ্যতামূলক", d: "অনলাইন পেজে দাম জিজ্ঞেস করলে 'ইনবক্সে আসেন' লেখা চলবে না। দাম সরাসরি জানাতে হবে।" },
+    { t: "পরীক্ষার আগের রাতে ফটোকপির দোকান ২৪ ঘণ্টা খোলা", d: "ছাত্রছাত্রীদের শেষ মুহূর্তের নোট ঠিক সময়ে হাতে আসবে। দোকানদারের জন্য রাতের চা সরকারি খরচে।" },
+    { t: "স্কুলব্যাগের ওজন সীমা দুই কেজি", d: "বাকি বই স্কুলের তাকেই থাকবে। শিশুদের পিঠ বাঁচবে, অভিভাবকদের দুশ্চিন্তাও কমবে।" },
+    { t: "বিয়েবাড়িতে ফিরতি প্যাকেট বাধ্যতামূলক", d: "দাওয়াতে খাওয়ার পর বিরিয়ানির একটা প্যাকেট নিয়ে ফিরবে সবাই। নিয়ম ভাঙলে মেজবানের বদনাম।" },
+    { t: "'৫ মিনিটে আসছি' ঘোষণায় আসল সময় জানানো", d: "বন্ধু ৫ মিনিট বললে অ্যাপ জানিয়ে দেবে আসলে কত সময় লাগবে। অ্যাপের হিসাব সাধারণত আধা ঘণ্টা।" },
+    { t: "প্রতি বৃহস্পতিবার জাতীয় আড্ডা বিরতি", d: "বিকেল পাঁচটায় সারা দেশে ২০ মিনিটের চা-বিরতি। এই সময়ে কেউ ইমেইল দেখবে না।" },
+    { t: "প্রতিটি ছাদে একটা করে বাগান", d: "টব, তুলসী আর কিছু লাউগাছ। কাকদের জন্য আলাদা একটা পানির পাত্র বরাদ্দ।" },
+    { t: "শীতে পথের কুকুর-বিড়ালের জন্য কম্বল", d: "প্রতিটি এলাকায় স্বেচ্ছাসেবকদের হাতে পুরোনো কম্বল জমা হবে। সবচেয়ে বেশি দেবে যে পাড়া, সে পাবে ট্রফি।" },
+    { t: "জলাবদ্ধ রাস্তায় নৌকা সার্ভিস", d: "বৃষ্টিতে পানি জমলে রাস্তাই নদী। ভাড়া রিকশার মতোই, দরদাম চলবে।" },
+    { t: "সব বাসে ডিজিটাল ভাড়ামিটার", d: "কন্ডাক্টরের সঙ্গে ভাড়া নিয়ে তর্ক শেষ। খুচরার বদলে চকলেট দেওয়াও বন্ধ।" },
+    { t: "অফিসে ঘুমের জন্য ১৫ মিনিটের বিরতি", d: "দুপুরের খাবারের পর সবার জন্য ছোট্ট ঘুম। বস ঘুমালে কেউ ছবি তুলতে পারবে না।" }
+  ];
+  var BUDGETS = ["১০০ কোটি টাকা", "৫০০ কোটি টাকা", "২ হাজার কোটি টাকা", "মাত্র ১২ হাজার টাকা আর এক কাপ চা", "ভাই, বাজেট পরে দেখা যাবে", "৩০০ কোটি, তবে ঠিকাদার ঠিক হয়নি"];
+  var WHENS = ["আজ রাতেই", "৩ দিনের মধ্যে", "ঈদের আগে", "পরের বৃষ্টিতে", "১৫ দিনে", "আগামী সপ্তাহের শুক্রবার"];
+  var REACTS = ["চায়ের দোকানে তুমুল আলোচনা", "ফেসবুকে ৩২ হাজার শেয়ার", "বিরোধী দল বলছে, আমরাও এটাই ভাবছিলাম", "রিকশাওয়ালা মামা বললেন, ভালোই তো", "মা বললেন, আগে ভাত খেয়ে নাও", "পাড়ার বড় ভাই বললেন, আমি আগেই বলেছিলাম"];
+  var TOTAL = 300;
+
+  function bn(n) { return String(n).replace(/\d/g, function (d) { return "০১২৩৪৫৬৭৮৯"[d]; }); }
+  function rand(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  var deck = shuffle(IDEAS.slice());
+  function makeNotice() {
+    if (!deck.length) deck = shuffle(IDEAS.slice());
+    var i = deck.pop();
+    return { t: i.t, d: i.d, budget: rand(BUDGETS), when: rand(WHENS), react: rand(REACTS) };
+  }
+  function $(id) { return document.getElementById(id); }
+
+  var issued = [], current = makeNotice(), left = TOTAL, timer = null, started = false, ended = false;
+
+  function showNotice(n, label, stampText, animate) {
+    $("noticeNo").textContent = label;
+    $("stamp").textContent = stampText;
+    $("nTitle").textContent = n.t;
+    $("nDetail").textContent = n.d;
+    $("nBudget").textContent = n.budget;
+    $("nWhen").textContent = n.when;
+    $("nReact").textContent = n.react;
+    var s = $("stamp");
+    s.classList.remove("pop");
+    if (animate) { void s.offsetWidth; s.classList.add("pop"); }
+  }
+
+  function renderTime() {
+    var m = Math.floor(left / 60), s = left % 60;
+    $("time").textContent = bn(("0" + m).slice(-2)) + ":" + bn(("0" + s).slice(-2));
+    $("bar").style.width = (left / TOTAL * 100) + "%";
+    $("clockBox").classList.toggle("urgent", left <= 30 && started);
+  }
+
+  function renderLog() {
+    var ol = $("logList");
+    ol.innerHTML = "";
+    issued.forEach(function (n, idx) {
+      var li = document.createElement("li");
+      var a = document.createElement("span"); a.textContent = bn(idx + 1);
+      var b = document.createElement("span"); b.textContent = n.t;
+      li.appendChild(a); li.appendChild(b); ol.appendChild(li);
+    });
+    $("logEmpty").hidden = issued.length > 0;
+  }
+
+  function issue() {
+    current = makeNotice();
+    issued.push(current);
+    showNotice(current, "প্রজ্ঞাপন নং ৫মি/২০২৬/" + bn(("0" + issued.length).slice(-2)), "জারি হলো", true);
+    renderLog();
+  }
+
+  function finish() {
+    ended = true;
+    clearInterval(timer);
+    $("issueBtn").disabled = true;
+    $("issueBtn").textContent = "ক্ষমতার মেয়াদ শেষ";
+    $("clockNote").innerHTML = "<strong>সময় শেষ।</strong> প্রধানমন্ত্রীর চেয়ার খালি করে দাও।";
+    var n = issued.length, title;
+    if (n <= 1) title = "নবীন প্রধানমন্ত্রী";
+    else if (n <= 3) title = "কর্মঠ প্রধানমন্ত্রী";
+    else if (n <= 5) title = "ঝড়ের গতির প্রধানমন্ত্রী";
+    else title = "রেকর্ডভাঙা প্রধানমন্ত্রী";
+    $("repTitle").textContent = "উপাধি: " + title;
+    $("repText").textContent = "পাঁচ মিনিটে তুমি " + bn(n) + "টা সিদ্ধান্ত নিয়েছ। বন্ধুদের চ্যালেঞ্জ দাও, দেখো কে বেশি পারে।";
+    $("report").hidden = false;
+    $("clockBox").classList.remove("urgent");
+  }
+
+  function tick() {
+    left -= 1;
+    renderTime();
+    if (left <= 0) { left = 0; renderTime(); finish(); }
+  }
+
+  $("issueBtn").addEventListener("click", function () {
+    if (ended) return;
+    if (!started) {
+      started = true;
+      $("issueBtn").textContent = "আরেকটা প্রজ্ঞাপন জারি করো";
+      $("clockNote").innerHTML = "<strong>ক্ষমতা তোমার হাতে।</strong> যত পারো সিদ্ধান্ত নাও।";
+      $("resetBtn").hidden = false;
+      timer = setInterval(tick, 1000);
+    }
+    issue();
+  });
+
+  function buildText() {
+    if (!issued.length) {
+      return "৫ মিনিটের প্রধানমন্ত্রী\n" + current.t + "\n" + current.d;
+    }
+    var lines = ["আমি ৫ মিনিটের প্রধানমন্ত্রী হয়ে " + bn(issued.length) + "টা সিদ্ধান্ত নিলাম:"];
+    issued.forEach(function (n, i) { lines.push(bn(i + 1) + ". " + n.t + " (" + n.when + ")"); });
+    lines.push("তুমি কয়টা পারো?");
+    return lines.join("\n");
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", "");
+    ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  $("copyBtn").addEventListener("click", function () {
+    var btn = $("copyBtn"), text = buildText();
+    function done(ok) {
+      btn.textContent = ok ? "কপি হয়েছে" : "কপি করা গেল না, হাতে সিলেক্ট করো";
+      setTimeout(function () { btn.textContent = "কপি করো"; }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
+    } else { done(fallbackCopy(text)); }
+  });
+
+  $("resetBtn").addEventListener("click", function () {
+    clearInterval(timer);
+    issued = []; started = false; ended = false; left = TOTAL;
+    current = makeNotice();
+    $("issueBtn").disabled = false;
+    $("issueBtn").textContent = "ঘড়ি চালু করো, ক্ষমতা নাও";
+    $("clockNote").textContent = "ঘড়ি এখনো চালু হয়নি। নিচের নমুনা প্রজ্ঞাপন দেখে নাও।";
+    $("resetBtn").hidden = true;
+    $("report").hidden = true;
+    showNotice(current, "নমুনা প্রজ্ঞাপন", "নমুনা", false);
+    renderTime(); renderLog();
+  });
+
+  showNotice(current, "নমুনা প্রজ্ঞাপন", "নমুনা", false);
+  renderTime();
+  renderLog();
+})();
+</script>
